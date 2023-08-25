@@ -1,31 +1,29 @@
-// Convert RGB to HSV
-function rgbToHsv(r, g, b) {
-    r /= 255, g /= 255, b /= 255;
+const convert = require('color-convert'); // use 'color-convert' to convert RGB to HSV
 
-    let max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h, s, v = max;
-    let d = max - min;
+/** 
+ * Convert RGB to HSV
+ * @param {*} r - Red value
+ * @param {*} g - Green value
+ * @param {*} b - Blue value
+ * @returns {Array} - HSV values
+ */
+const rgbToHsv = (r, g, b) => convert.rgb.hsv(r, g, b);
 
-    if (max == 0) s = 0;
-    else s = d / max;
-
-    if (max == min) h = 0; // achromatic
-    else {
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-        }
-        h /= 6;
-    }
-    return [h, s, v];
-}
-
-// Check if color gives a happy feeling (this is basic and can be fine-tuned)
-function isHappyColor(r, g, b) {
-    const [h, s, v] = rgbToHsv(r, g, b);
-    // Roughly check for hues corresponding to yellow, light greens, bright blues
-    return (h >= 0.1 && h <= 0.2) || (h >= 0.3 && h <= 0.6);
+/**
+ * Check if color gives a happy feeling
+ * Basic idea: check if the Hue value lies within the range of colors generally considered "happy" (yellows, light greens, bright blues, etc.).
+ *
+ * Note: This is a simplification and may not be 100% accurate.
+ * You could use research/data on color psychology to fine-tune this function.
+ * 
+ * @param {*} r - Red value
+ * @param {*} g - Green value
+ * @param {*} b - Blue value
+ * @returns 
+ */
+const isHappyColor = (r, g, b) => {
+    const [h] = rgbToHsv(r, g, b);
+    return (h >= 45 && h <= 90) || (h >= 91 && h <= 170) || (h >= 171 && h <= 260); 
 }
 
 module.exports = { isHappyColor };

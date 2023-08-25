@@ -1,42 +1,49 @@
 const sharp = require('sharp');
-const { isHappyColor } = require('./utils/colorUtils');
+const { verifySize, checkHappyColors, checkPixelsWithinCircle } = require('./utils/checkUtils');
 
+/**
+ * Verify the badge image
+ * 
+ * 1. Verify the size is 512x512
+ * 2. Ensure non-transparent pixels are within a circle
+ * 3. Ensure colors of the badge give a "happy" feeling
+ * 
+ * @param {string} filePath - Path to the image
+ * @returns {boolean} - True if the image is valid, false otherwise
+ * @async
+ */
 async function verifyImage(filePath) {
+
+    // Ensure the image is of PNG format for verification
+    if (path.extname(filePath) !== '.png') {
+        console.log('❌ Please provide a PNG image for verification.');
+        return false;
+    }
+
+    // Fetch metadata
     const image = sharp(filePath);
     const metadata = await image.metadata();
 
-    // Check size
-    if (metadata.width !== 512 || metadata.height !== 512) {
-        throw new Error("Image size is not 512x512");
+    // 1. Verify the size is 512x512
+    const validSize = verifySize(metadata);
+    if (!validSize) {
+        console.log(`❌ Please provide an image that is ${MAX_WIDTH}x${MAX_HEIGHT}.`);
+        return false;
     }
 
-    // Fetch raw pixel data
+    // 2. Ensure non-transparent pixels are within a circle
     const raw = await image.raw().toBuffer();
-    const center = { x: 256, y: 256 };
-    let isHappy = true;
-
-    for (let y = 0; y < 512; y++) {
-        for (let x = 0; x < 512; x++) {
-            const idx = (y * 512 + x) * 4;
-            const r = raw[idx];
-            const g = raw[idx + 1];
-            const b = raw[idx + 2];
-            const a = raw[idx + 3];
-
-            const dist = Math.sqrt(Math.pow(center.x - x, 2) + Math.pow(center.y - y, 2));
-
-            if (a !== 0 && dist > 256) {
-                throw new Error("Non-transparent pixel outside circle");
-            }
-
-            if (a !== 0 && !isHappyColor(r, g, b)) {
-                isHappy = false;
-            }
-        }
+    const withInCircle = checkPixelsWithinCircle(raw);
+    if (!withInCircle) {
+        console.log('❌ Non-transparent pixel outside circle');
+        return false;
     }
 
-    if (!isHappy) {
-        throw new Error("Image colors do not convey a happy feeling");
+    // 3. Ensure happy colors
+    const isHappyColors = checkHappyColors(raw);
+    if (!isHappyColors) {
+        console.log('❌ Image colors do not convey a happy feeling');
+        return false;
     }
 
     return true;
