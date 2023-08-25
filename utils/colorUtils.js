@@ -11,8 +11,9 @@ const rgbToHsv = (r, g, b) => convert.rgb.hsv(r, g, b);
 
 /**
  * Check if color gives a happy feeling
- * Basic idea: check if the Hue value lies within the range of colors generally considered "happy" (yellows, light greens, bright blues, etc.).
- *
+ * Basic idea: Bright and vivid colors often evoke happiness more than muted ones.
+ * Thus, ensuring that the saturation and value (brightness) of the colors are within a certain range might be beneficial.
+ * 
  * Note: This is a simplification and may not be 100% accurate.
  * You could use research/data on color psychology to fine-tune this function.
  * 
@@ -22,8 +23,12 @@ const rgbToHsv = (r, g, b) => convert.rgb.hsv(r, g, b);
  * @returns 
  */
 const isHappyColor = (r, g, b) => {
-    const [h] = rgbToHsv(r, g, b);
-    return (h >= 45 && h <= 90) || (h >= 91 && h <= 170) || (h >= 171 && h <= 260); 
+    if (r !== 0 && g !== 0 && b !== 0) {
+        const [h, s, v] = rgbToHsv(r, g, b);
+        const isVivid = (s > 20 && v > 20);  // this ensures colors are neither too dull nor too dark
+        return isVivid;
+    }
+    return true;
 }
 
 module.exports = { isHappyColor };

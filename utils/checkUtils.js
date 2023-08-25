@@ -32,7 +32,9 @@ const checkPixelsWithinCircle = raw => {
 
 /**
  * Ensure colors of the badge give a "happy" feeling
- * Basic idea: check if the Hue value lies within the range of colors generally considered "happy" (yellows, light greens, bright blues, etc.).
+ * Basic idea: Bright and vivid colors often evoke happiness more than muted ones.
+ * 
+ * Checks if less than 20% of the pixels are dull (not bright and vivid enough i.e: not happy)
  * 
  * Note: This is a simplification and may not be 100% accurate.
  * You could use research/data on color psychology to fine-tune this function.
@@ -40,8 +42,9 @@ const checkPixelsWithinCircle = raw => {
  * @param {*} raw - Raw image data
  * @returns {boolean} - True if the image colors give a "happy" feeling, false otherwise
  */
-const checkHappyColors = raw => {
-    let isHappy = true;
+const checkHappyColors = (raw, verbose = true) => {
+    let dullPixels = 0;
+
     for (let y = 0; y < 512; y++) {
         for (let x = 0; x < 512; x++) {
             const idx = (y * 512 + x) * 4;
@@ -49,11 +52,14 @@ const checkHappyColors = raw => {
             const g = raw[idx + 1];
             const b = raw[idx + 2];
             if (!isHappyColor(r, g, b)) {
-                isHappy = false;
+                dullPixels++;
             }
         }
     }
-    return isHappy;
+    if (verbose) {
+        console.log(`⛔️ ${dullPixels}/${512 * 512} (${100 * (dullPixels / (512 * 512))} %) pixels are dull.`);
+    }
+    return (dullPixels / (512 * 512)) < 0.2; // less than 20% dull pixels
 }
 
 module.exports = {
