@@ -1,0 +1,21 @@
+{
+  "name": "badge-verifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "color-convert": "^2.0.1",
+    "mocha": "^10.2.0",
+    "sharp": "^0.32.5"
+  }
+}
