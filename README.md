@@ -31,7 +31,7 @@ This will verify if the image meets the badge criteria. The image must be in `PN
 
 For example:
 ```bash
-node index.js verify ./images/valid.png
+node index.js verify images/test_pic.png
 ```
 
 ### Convert an Image
@@ -43,6 +43,11 @@ node index.js convert <path-to-image> <output-name>
 This will convert any valid image format into the badge format and save it with the provided output name.
 
 > Note that in the convert command, "<output-name>" is optional. If not provided, the output will be saved as `convertedImage.png` by default.
+
+For example:
+```bash
+node index.js convert images/pic.jpeg images/converted_pic.png
+```
 
 ## Test
 
@@ -56,7 +61,7 @@ npm test
 
 1. Size should be 512x512 pixels.
 2. Only non-transparent pixels should be within a circle.
-3. The colors of the badge should convey a "happy" feeling. (This is a simplification based on HSV values).
+3. The colors of the badge should convey a "happy" feeling. (This is a simplification based on bright and vivid colors).
 
 ## Dependencies
 
