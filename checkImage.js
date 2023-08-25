@@ -14,11 +14,11 @@ const { verifySize, checkHappyColors, checkPixelsWithinCircle } = require('./uti
  * @returns {boolean} - True if the image is valid, false otherwise
  * @async
  */
-async function verifyImage(filePath) {
+async function verifyImage(filePath, verbose = true) {
 
     // Ensure the image is of PNG format for verification
     if (path.extname(filePath) !== '.png') {
-        console.log('❌ Please provide a PNG image for verification.');
+        verbose && console.log('❌ Please provide a PNG image for verification.');
         return false;
     }
 
@@ -29,7 +29,7 @@ async function verifyImage(filePath) {
     // 1. Verify the size is 512x512
     const validSize = verifySize(metadata);
     if (!validSize) {
-        console.log(`❌ Please provide an image that is ${MAX_WIDTH}x${MAX_HEIGHT}.`);
+        verbose && console.log(`❌ Please provide an image that is ${MAX_WIDTH}x${MAX_HEIGHT}.`);
         return false;
     }
 
@@ -37,14 +37,14 @@ async function verifyImage(filePath) {
     const raw = await image.raw().toBuffer();
     const withInCircle = checkPixelsWithinCircle(raw);
     if (!withInCircle) {
-        console.log('❌ Non-transparent pixel outside circle');
+        verbose && console.log('❌ Non-transparent pixel outside circle');
         return false;
     }
 
     // 3. Ensure happy colors
-    const isHappyColors = checkHappyColors(raw);
+    const isHappyColors = checkHappyColors(raw, verbose);
     if (!isHappyColors) {
-        console.log('❌ Image colors do not convey a happy feeling');
+        verbose && console.log('❌ Image colors do not convey a happy feeling');
         return false;
     }
 
