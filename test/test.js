@@ -57,7 +57,7 @@ describe("Image Verification", function() {
 
 describe("Image Conversion", function() {
 
-    const testFormats = ['jpg', 'png', 'webp']; // add any other formats you'd like to test
+    const testFormats = ['jpeg', 'png', 'webp']; // add any other formats you'd like to test
 
     for (const format of testFormats) {
         it(`convertImage() should handle an image of format '.${format}'`, async function() {
@@ -141,8 +141,8 @@ describe("Image Conversion", function() {
 
     it("convertImage() should convert an image and pass it to verifyImage() function with no errors", async function() {
 
-        const input_image = path.join(__dirname, "..", "images/pic.jpg");
-        const output_image = path.join(__dirname, "..", "images/converted_avatar-wide.png");
+        const input_image = path.join(__dirname, "..", "images/pic.jpeg");
+        const output_image = path.join(__dirname, "..", "images/converted_pic.png");
 
         // Remove any existing output file
         if (fs.existsSync(output_image)) { fs.unlinkSync(output_image); }
