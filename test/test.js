@@ -85,6 +85,10 @@ describe("Image Conversion", function() {
             // Check if the output image has the expected size and format
             const { format: outputFormat } = await sharp(output_image).metadata();
             assert.strictEqual(outputFormat, 'png'); // assuming we always want PNG output
+
+            // Cleanup: remove output file
+            if (fs.existsSync(output_image)) { fs.unlinkSync(output_image); }
+
         });
     }
 
@@ -137,6 +141,9 @@ describe("Image Conversion", function() {
                 }
             }
         }
+
+        // Cleanup: remove output file
+        if (fs.existsSync(output_image)) { fs.unlinkSync(output_image); }
     });
 
     it("convertImage() should convert an image and pass it to verifyImage() function with no errors", async function() {
@@ -163,6 +170,9 @@ describe("Image Conversion", function() {
 
         const isValid = await verifyImage(output_image, false);
         assert.strictEqual(isValid, true);
+
+        // Cleanup: remove output file
+        if (fs.existsSync(output_image)) { fs.unlinkSync(output_image); }
 
     });
 
