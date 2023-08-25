@@ -1,4 +1,6 @@
+const path = require('path');
 const sharp = require('sharp');
+const { MAX_WIDTH, MAX_HEIGHT } = require('./utils/constants');
 const { verifySize, checkHappyColors, checkPixelsWithinCircle } = require('./utils/checkUtils');
 
 /**

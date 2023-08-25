@@ -27,7 +27,7 @@ npm install
 node index.js verify <path-to-image>
 ```
 
-This will verify if the image meets the badge criteria. The image must be in PNG format for verification.
+This will verify if the image meets the badge criteria. The image must be in `PNG` format for verification.
 
 For example:
 ```bash
@@ -42,7 +42,7 @@ node index.js convert <path-to-image> <output-name>
 
 This will convert any valid image format into the badge format and save it with the provided output name.
 
-> Note that in the convert command, <output-name> is optional. If not provided, the output will be saved as `convertedImage.png` by default.
+> Note that in the convert command, "<output-name>" is optional. If not provided, the output will be saved as `convertedImage.png` by default.
 
 ## Test
 

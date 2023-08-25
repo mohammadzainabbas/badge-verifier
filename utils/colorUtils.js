@@ -22,8 +22,14 @@ const rgbToHsv = (r, g, b) => convert.rgb.hsv(r, g, b);
  * @returns 
  */
 const isHappyColor = (r, g, b) => {
-    const [h] = rgbToHsv(r, g, b);
-    return (h >= 45 && h <= 90) || (h >= 91 && h <= 170) || (h >= 171 && h <= 260); 
+    if (r !== 0 && g !== 0 && b !== 0) {
+        const [h, s, v] = rgbToHsv(r, g, b);
+        // const isHappyHue = (h >= 50 && h <= 150);
+        const isVivid = (s > 20 && v > 20);  // this ensures colors are neither too dull nor too dark
+        // return isHappyHue && isVivid;
+        return isVivid;
+    }
+    return true;
 }
 
 module.exports = { isHappyColor };

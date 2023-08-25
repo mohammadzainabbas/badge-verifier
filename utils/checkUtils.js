@@ -41,7 +41,8 @@ const checkPixelsWithinCircle = raw => {
  * @returns {boolean} - True if the image colors give a "happy" feeling, false otherwise
  */
 const checkHappyColors = raw => {
-    let isHappy = true;
+    let dullPixels = 0;
+
     for (let y = 0; y < 512; y++) {
         for (let x = 0; x < 512; x++) {
             const idx = (y * 512 + x) * 4;
@@ -49,11 +50,12 @@ const checkHappyColors = raw => {
             const g = raw[idx + 1];
             const b = raw[idx + 2];
             if (!isHappyColor(r, g, b)) {
-                isHappy = false;
+                dullPixels++;
             }
         }
     }
-    return isHappy;
+    console.log(`⛔️ ${dullPixels}/${512 * 512} (${100 * (dullPixels / (512 * 512))} %) pixels are dull.`);
+    return (dullPixels / (512 * 512)) < 0.2; // less than 20% dull pixels
 }
 
 module.exports = {
